@@ -3,9 +3,9 @@
 A performance oriented, shaved, light-weight Java Web framework which is at **alpha** state.
 
 ##Motivation
-Having a fast and flexible resource server.
-Using bleeding-edge technologies.
-Fun.
+* Having a fast and flexible resource server.
+* Using bleeding-edge technologies.
+* Fun.
 
 It is
 
