@@ -14,7 +14,7 @@ public class ExchangeBag {
 
     private final HttpServerExchange exchange;
 
-    private Map<String, String> formParameters = null;
+    private Map<String, byte[]> formParameters = null;
 
     private byte[] requestPayload = null;
 
@@ -40,12 +40,12 @@ public class ExchangeBag {
         return requestPayload;
     }
 
-    public Map<String, String> getFormParameters() {
+    public Map<String, byte[]> getFormParameters() {
         return formParameters;
     }
 
-    public void setFormParameters(Map<String, String> formParameters) {
-        this.formParameters = new HashMap<String, String>(formParameters);
+    public void setFormParameters(Map<String, byte[]> formParameters) {
+        this.formParameters = new HashMap<String, byte[]>(formParameters);
     }
 
 }

@@ -1,5 +1,6 @@
 package io.mudelephant.athlete.param.setter;
 
+import com.google.common.base.Charsets;
 import io.mudelephant.athlete.param.ExchangeBag;
 import io.mudelephant.core.ObjectMapper;
 
@@ -17,6 +18,7 @@ public abstract class Setter<T> {
     Class<T> typeClass = null;
     Constructor<T> constructor = null;
 
+
     public Setter(DefaultValue defaultValueAnn, Class<T> typeClass) {
         this.typeClass = typeClass;
         try {
@@ -25,13 +27,11 @@ public abstract class Setter<T> {
             //Don't mind life goes on.
         }
 
-        if (defaultValueAnn != null)
-            this.defaultValue = parse(defaultValueAnn.value());
-
-
+        if (defaultValueAnn != null) // default java
+            this.defaultValue = parse(defaultValueAnn.value().getBytes(Charsets.UTF_8));
     }
 
-    abstract String prepare(ExchangeBag exchange);
+    abstract byte[] prepare(ExchangeBag exchange);
 
     /**
      * Helps to get value of the parameter.
@@ -41,7 +41,7 @@ public abstract class Setter<T> {
      * @return
      */
     public final T get(ExchangeBag exchange) {
-        String value = prepare(exchange);
+        byte[] value = prepare(exchange);
         if (defaultValue != null && value == null)
             return defaultValue;
         else if (value != null)
@@ -53,22 +53,21 @@ public abstract class Setter<T> {
     /**
      * Parses json of the value and returns real type instance.
      *
-     * @param valueString
+     * @param buffer
      * @return
      */
-    private final T parse(String valueString) {
+    private final T parse(byte[] buffer) {
         T value = null;
         if (constructor != null) {
             try {
-
                 Constructor<T> constructor = getTypeClass().getConstructor(String.class);
-                value = constructor.newInstance(valueString);
+                value = constructor.newInstance(new String(buffer));
                 return value;
             } catch (Exception e) {
                 //Just try to parse json. Let it go!
             }
         }
-        value = ObjectMapper.getInstance().fromJson(valueString, getTypeClass());
+        value = ObjectMapper.getInstance().fromJson(buffer, getTypeClass());
         return value;
     }
 

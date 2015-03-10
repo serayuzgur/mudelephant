@@ -16,11 +16,12 @@ public class ByQuery<T> extends Setter<T>{
         this.key = key;
     }
 
-    String prepare(ExchangeBag bag) {
+    byte[] prepare(ExchangeBag bag) {
         Deque value = bag.getExchange().getQueryParameters().get(key);
         if(value == null)
             return  null;
-        return value.getFirst().toString();
+        //Always String
+        return (byte[]) ((String)value.getFirst()).getBytes();
     }
 
 }

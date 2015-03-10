@@ -19,7 +19,7 @@ public class ByForm<T> extends Setter<T> {
         this.key = key;
     }
 
-    String prepare(ExchangeBag bag) {
+    byte[] prepare(ExchangeBag bag) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         //cache all form params at first pass.
         if (bag.getFormParameters() == null) {

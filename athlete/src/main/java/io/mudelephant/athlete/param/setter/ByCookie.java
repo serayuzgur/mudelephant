@@ -16,11 +16,11 @@ public class ByCookie<T> extends Setter<T> {
         this.key = key;
     }
 
-    String prepare(ExchangeBag bag) {
+    byte[] prepare(ExchangeBag bag) {
         Cookie value = bag.getExchange().getRequestCookies().get(key);
         if (value == null)
             return null;
-        return value.getValue();
+        return value.getValue().getBytes();
     }
 
 }

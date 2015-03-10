@@ -13,8 +13,8 @@ public class ByJson<T> extends Setter<T> {
         super(defaultValueAnn, typeClass);
     }
 
-    String prepare(ExchangeBag bag) {
-        return new String(bag.getRequestPayload());
+    byte[] prepare(ExchangeBag bag) {
+        return bag.getRequestPayload();
     }
 
 }

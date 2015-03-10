@@ -8,24 +8,25 @@ import javax.ws.rs.DefaultValue;
 /**
  * ByHeader is a helper class to set a parameter from headers.
  */
-public class ByHeader<T> extends Setter<T>{
+public class ByHeader<T> extends Setter<T> {
     String key;
 
     public ByHeader(DefaultValue defaultValueAnn, Class<T> typeClass, String key) {
-        super(defaultValueAnn,typeClass);
+        super(defaultValueAnn, typeClass);
         this.key = key;
     }
 
     /**
      * Gets the header with the given key. Returns the first value for that header.
+     *
      * @param bag
      * @return
      */
-    String prepare(ExchangeBag bag) {
+    byte[] prepare(ExchangeBag bag) {
         HeaderValues value = bag.getExchange().getRequestHeaders().get(key);
-        if(value == null)
-            return  null;
-        return value.getFirst();
+        if (value == null)
+            return null;
+        return value.getFirst().getBytes();
     }
 
 }
