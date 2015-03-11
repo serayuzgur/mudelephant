@@ -18,7 +18,7 @@ Implementing the most used features.
 	* @FormParam
 	* @HeaderParam
 	* @QueryParam
-	* Primitive types and their Wrapper classes with some extra parsed with custom parsers for speed.
+	* Primitive types, their Wrappers and some de-facto parameter classes are parsed with custom parsers. 
 	 * BigInteger
 	 * Boolean, boolean
 	 * Byte, byte
@@ -36,7 +36,7 @@ Implementing the most used features.
 	* @Consumes
 	* @Encoded
 	* Boon Performance optimization. (Uses ObjectMapper, will change to Parser)
-	* Date parser
+	* Custom DateParser
 	* etc. (What ever is necessary...)
 * Long-Term
 	* @HEAD
