@@ -43,10 +43,6 @@ Implementing the most used features.
 	* @PathParam
 	* @MatrixParam
 	* etc. (the ones needed least)
-	
-##Key Features
-* Decides how to parse per method *(path)* at the startup.
-* If your parameters has String Constructor *(ClassX(String))* it does not use JSON parser. (For faster primitive parsing).
 
 
 
