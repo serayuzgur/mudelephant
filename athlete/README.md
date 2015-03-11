@@ -18,6 +18,7 @@ Implementing the most used features.
 	* @FormParam
 	* @HeaderParam
 	* @QueryParam
+	* Primitive types and their Wrapper classes uses custom parsers for speed (BigInteger, Boolean, Byte, Character, Double, Float, Integer, Long, Short, String)
 * Waiting
 	* @OPTIONS
 	* @ApplicationPath
@@ -25,7 +26,6 @@ Implementing the most used features.
 	* @Consumes
 	* @Encoded
 	* Boon Performance optimization. (Uses ObjectMapper, will change to Parser)
-	* String Constructor *(ClassX(String))* option will be an annotation.
 	* etc. (What ever is necessary...)
 * Long-Term
 	* @HEAD
