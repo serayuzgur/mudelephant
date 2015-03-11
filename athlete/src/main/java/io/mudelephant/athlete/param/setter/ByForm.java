@@ -11,10 +11,10 @@ import java.util.HashMap;
 /**
  * ByForm is a helper class to set a parameter from form payload.
  */
-public class ByForm<T> extends Setter<T> {
+public class ByForm extends Setter {
     String key;
 
-    public ByForm(DefaultValue defaultValueAnn, Class<T> typeClass, String key) {
+    public ByForm(DefaultValue defaultValueAnn, Class typeClass, String key) {
         super(defaultValueAnn, typeClass);
         this.key = key;
     }
@@ -29,6 +29,7 @@ public class ByForm<T> extends Setter<T> {
             for (String param : formParams) {
                 String[] pair = param.split("=");
                 try {
+                    //TODO: Get encoding and charset from headers
                     map.put(pair[0], URLDecoder.decode(pair[1], "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();

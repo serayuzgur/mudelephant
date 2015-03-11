@@ -1,34 +1,44 @@
 package io.mudelephant.athlete.param.setter;
 
-import com.google.common.base.Charsets;
 import io.mudelephant.athlete.param.ExchangeBag;
-import io.mudelephant.core.ObjectMapper;
+import io.mudelephant.athlete.param.parser.Parser;
+import io.mudelephant.athlete.param.parser.Parsers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.DefaultValue;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Setter is an abstract class which requires set of methods for Any Setter implementations.
- * Also some implemented methods for common Setter usage.
+ * Also some implemented methods for common Setter usage. It has minimum memory footprint and runtime execution cost.
+ * Aims to do all actions on the constructor, and leave less to parsing.
  */
-public abstract class Setter<T> {
+public abstract class Setter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Setter.class);
 
-    T defaultValue = null;
-    Class<T> typeClass = null;
-    Constructor<T> constructor = null;
+    private Object defaultValue = null;
+    private Class typeClass = null;
+    private boolean isString = false;
+    private boolean isChar = false;
+    private Parser parser;
 
 
-    public Setter(DefaultValue defaultValueAnn, Class<T> typeClass) {
+    public Setter(DefaultValue defaultValueAnn, Class typeClass) {
         this.typeClass = typeClass;
-        try {
-            constructor = getTypeClass().getConstructor(String.class);
-        } catch (NoSuchMethodException e) {
-            //Don't mind life goes on.
-        }
 
-        if (defaultValueAnn != null) // default java
-            this.defaultValue = parse(defaultValueAnn.value().getBytes(Charsets.UTF_8));
+        parser = Parsers.decide(typeClass);
+
+        if (defaultValueAnn != null) {
+            setDefaultValue(parse(defaultValueAnn.value().getBytes()));
+        }
+    }
+
+    public boolean isString() {
+        return isString;
+    }
+
+    public boolean isChar() {
+        return isChar;
     }
 
     abstract byte[] prepare(ExchangeBag exchange);
@@ -40,7 +50,7 @@ public abstract class Setter<T> {
      * @param exchange
      * @return
      */
-    public final T get(ExchangeBag exchange) {
+    public final Object get(ExchangeBag exchange) {
         byte[] value = prepare(exchange);
         if (defaultValue != null && value == null)
             return defaultValue;
@@ -56,34 +66,13 @@ public abstract class Setter<T> {
      * @param buffer
      * @return
      */
-    private final T parse(byte[] buffer) {
-        T value = null;
-        if (constructor != null) {
-            try {
-                Constructor<T> constructor = getTypeClass().getConstructor(String.class);
-                value = constructor.newInstance(new String(buffer));
-                return value;
-            } catch (Exception e) {
-                //Just try to parse json. Let it go!
-            }
-        }
-        value = ObjectMapper.getInstance().fromJson(buffer, getTypeClass());
-        return value;
+    private final Object parse(byte[] buffer) {
+        return parser.parse(buffer,getTypeClass());
     }
 
 
-    public void setDefaultValue(T defaultValue) {
+    public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    /**
-     * Finds the class of the Generic and stores for future usage.
-     * Called by constructor.
-     */
-    private final void decideTypeClass() {
-        if (typeClass == null) {
-            this.typeClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        }
     }
 
     /**
@@ -91,7 +80,8 @@ public abstract class Setter<T> {
      *
      * @return
      */
-    public Class<T> getTypeClass() {
+    public Class getTypeClass() {
         return typeClass;
     }
+
 }

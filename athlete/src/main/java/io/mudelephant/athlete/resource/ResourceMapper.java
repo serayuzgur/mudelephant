@@ -84,7 +84,7 @@ public class ResourceMapper {
             Class<?> type = parameterTypes[i];
             if (anns.length == 0) {
                 //It means it will parse from JsonPayload
-                Setter<?> setter = new ByJson(null, type);
+                Setter setter = new ByJson(null, type);
                 setters[i] = setter;
 
             } else {
@@ -94,7 +94,7 @@ public class ResourceMapper {
                         defaultValue = (DefaultValue) anns[j];
                 }
                 for (Annotation ann : anns) {
-                    Setter<?> setter = null;
+                    Setter setter = null;
                     if (CookieParam.class.isInstance(ann))
                         setter = new ByCookie(defaultValue, type, ((CookieParam) ann).value());
                     else if (HeaderParam.class.isInstance(ann))

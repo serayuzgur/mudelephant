@@ -7,9 +7,9 @@ import javax.ws.rs.DefaultValue;
 /**
  * ByCookie is a helper class to set a parameter from cookies.
  */
-public class ByJson<T> extends Setter<T> {
+public class ByJson extends Setter {
 
-    public ByJson(DefaultValue defaultValueAnn, Class<T> typeClass) {
+    public ByJson(DefaultValue defaultValueAnn, Class typeClass) {
         super(defaultValueAnn, typeClass);
     }
 

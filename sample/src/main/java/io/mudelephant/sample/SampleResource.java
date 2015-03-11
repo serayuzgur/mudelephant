@@ -14,12 +14,12 @@ public class SampleResource implements Resource {
     }
 
     @PUT
-    public String put( SamplePojo pojo) {
+    public String put(SamplePojo pojo) {
         return "put: " + pojo.toString();
     }
 
     @POST
-    public String post(@FormParam("pojo")SamplePojo pojo) {
+    public String post(@FormParam("pojo") SamplePojo pojo) {
         return "post: " + "pojo: " + pojo.toString() + " ip : ";
     }
 
@@ -35,14 +35,16 @@ public class SampleResource implements Resource {
                        @HeaderParam("headerkey") String header,
                        @DefaultValue("headerdefault") @HeaderParam("headerkey2") String header2,
                        @QueryParam("querykey") String query,
-                       @DefaultValue("querydefault") @QueryParam("querykey2") String query2) {
+                       @DefaultValue("c") @QueryParam("querykey2") Character query2,
+                       @DefaultValue("3") @QueryParam("querykey3") Integer query3) {
         return "get3 : " +
                 cookie + "," +
                 cookie2 + "," +
                 header + "," +
                 header2 + "," +
                 query + "," +
-                query2 + ",";
+                query2 + ","+
+                query3 + ",";
     }
 
     @PUT

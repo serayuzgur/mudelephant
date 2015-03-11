@@ -8,10 +8,10 @@ import javax.ws.rs.DefaultValue;
 /**
  * ByCookie is a helper class to set a parameter from cookies.
  */
-public class ByCookie<T> extends Setter<T> {
+public class ByCookie extends Setter {
     String key;
 
-    public ByCookie(DefaultValue defaultValueAnn, Class<T> typeClass, String key) {
+    public ByCookie(DefaultValue defaultValueAnn, Class typeClass, String key) {
         super(defaultValueAnn, typeClass);
         this.key = key;
     }
@@ -20,6 +20,7 @@ public class ByCookie<T> extends Setter<T> {
         Cookie value = bag.getExchange().getRequestCookies().get(key);
         if (value == null)
             return null;
+
         return value.getValue().getBytes();
     }
 

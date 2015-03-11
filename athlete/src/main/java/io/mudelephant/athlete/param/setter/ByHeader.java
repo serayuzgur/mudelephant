@@ -8,10 +8,10 @@ import javax.ws.rs.DefaultValue;
 /**
  * ByHeader is a helper class to set a parameter from headers.
  */
-public class ByHeader<T> extends Setter<T> {
+public class ByHeader extends Setter {
     String key;
 
-    public ByHeader(DefaultValue defaultValueAnn, Class<T> typeClass, String key) {
+    public ByHeader(DefaultValue defaultValueAnn, Class typeClass, String key) {
         super(defaultValueAnn, typeClass);
         this.key = key;
     }

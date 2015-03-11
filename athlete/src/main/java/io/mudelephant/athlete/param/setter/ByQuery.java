@@ -8,20 +8,21 @@ import java.util.Deque;
 /**
  * ByCookie is a helper class to set a parameter from cookies.
  */
-public class ByQuery<T> extends Setter<T>{
+public class ByQuery extends Setter {
     String key;
 
-    public ByQuery(DefaultValue defaultValueAnn, Class<T> typeClass, String key) {
-        super(defaultValueAnn,typeClass);
+    public ByQuery(DefaultValue defaultValueAnn, Class typeClass, String key) {
+        super(defaultValueAnn, typeClass);
         this.key = key;
     }
 
     byte[] prepare(ExchangeBag bag) {
         Deque value = bag.getExchange().getQueryParameters().get(key);
-        if(value == null)
-            return  null;
+        if (value == null)
+            return null;
         //Always String
-        return (byte[]) ((String)value.getFirst()).getBytes();
+        String result = (String) value.getFirst();
+        return (result).getBytes();
     }
 
 }
