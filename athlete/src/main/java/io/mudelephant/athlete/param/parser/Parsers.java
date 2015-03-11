@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class Parsers {
     private static HashMap<String, Parser> map = new HashMap<String, Parser>();
-    private static Parser defaultParser = new DefaultParser();
+    private static Parser defaultParser = new JsonParser();
 
     static {
         map.put("BigInteger", new BigIntegerParser());
