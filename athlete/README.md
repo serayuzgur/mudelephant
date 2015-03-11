@@ -18,7 +18,17 @@ Implementing the most used features.
 	* @FormParam
 	* @HeaderParam
 	* @QueryParam
-	* Primitive types and their Wrapper classes parsed with custom parsers for speed (BigInteger, Boolean, Byte, Character, Double, Float, Integer, Long, Short, String)
+	* Primitive types and their Wrapper classes parsed with custom parsers for speed.
+	 * BigInteger
+	 * Boolean, boolean
+	 * Byte, byte
+	 * Character char
+	 * Double, double 
+	 * Float, float
+	 * Integer, int
+	 * Long long
+	 * Short, short
+	 * String
 * Waiting
 	* @OPTIONS
 	* @ApplicationPath
