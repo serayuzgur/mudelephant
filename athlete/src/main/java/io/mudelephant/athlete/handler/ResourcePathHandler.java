@@ -7,6 +7,8 @@ import io.mudelephant.common.utils.StringUtils;
 import io.mudelephant.core.ObjectMapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -15,12 +17,18 @@ import java.util.Map;
  * Handles routing of the request. Invokes the mapped resource method
  */
 public class ResourcePathHandler implements HttpHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourcePathHandler.class);
+
     private final String path;
     private final Map<String, MethodEntry> router;
 
 
     public ResourcePathHandler(String path, Map<String, MethodEntry> router) {
-        this.path = path;
+        if (!"*".equals(path))
+            this.path = path;
+        else
+            this.path = "";
+        //TODO: Bind with @ApplicationPath
         this.router = router;
     }
 
@@ -32,12 +40,19 @@ public class ResourcePathHandler implements HttpHandler {
         }
         String path = concatPath(exchange);
 
+        LOGGER.info("Request: " + path);
+
         MethodEntry pair = getResourceMethodBy(path);
+
+        if (pair == null) {
+            LOGGER.warn("Path Not Found: " + path);
+            exchange.setResponseCode(404);
+            return;
+        }
+
 
         executeMethod(pair.getKey(), pair.getValue(), exchange);
 
-        //TODO: log call properly.
-        System.out.println(path);
     }
 
     private void executeMethod(Method method, Setter[] setters, HttpServerExchange exchange) throws Exception {
@@ -50,6 +65,7 @@ public class ResourcePathHandler implements HttpHandler {
         }
         //TODO: find a way to handle streams
         String result = ObjectMapper.getInstance().toJson(method.invoke(method.getDeclaringClass().newInstance(), objects));
+        //TODO: find a way to write as byte[]
         exchange.getResponseSender().send(result);
 
     }
@@ -60,6 +76,6 @@ public class ResourcePathHandler implements HttpHandler {
 
 
     private String concatPath(HttpServerExchange exchange) {
-        return StringUtils.replaceNSlashWith1Slash(exchange.getRequestPath() + '/' + exchange.getRequestMethod());
+        return StringUtils.replaceNSlashWith1Slash('/' + path + '/' + exchange.getRequestPath() + ':' + exchange.getRequestMethod());
     }
 }

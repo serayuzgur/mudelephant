@@ -49,7 +49,7 @@ public class ResourceMapper {
                         .append(cPath)
                         .append('/')
                         .append(getPathFromAnnotation(method.getAnnotation(Path.class)).toLowerCase(Locale.ENGLISH))
-                        .append('/')
+                        .append(':')
                         .append(httpMethod);
                 String key = StringUtils.replaceNSlashWith1Slash(keyBuilder.toString());
                 if (routeMap.containsKey(key))
