@@ -7,14 +7,9 @@
         "port": 8080,
         "host": "localhost"
       }
-    ],
-    "contexts":[
-      {
-        "path":"a"
-      },
-      {
-        "path": "b"
-      }
     ]
+  },
+  "athlete": {
+    "context": ""
   }
 }

@@ -44,12 +44,14 @@ public class ResourceMapper {
         for (Method method : methods) {
             for (String httpMethod : getHttpMethodAnnotations(method)) {
                 StringBuilder keyBuilder = new StringBuilder();
-                keyBuilder.append(context)
+                keyBuilder
+                        .append('/')
+                        .append(context)
                         .append('/')
                         .append(cPath)
                         .append('/')
                         .append(getPathFromAnnotation(method.getAnnotation(Path.class)).toLowerCase(Locale.ENGLISH))
-                        .append(':')
+                        .append('/')
                         .append(httpMethod);
                 String key = StringUtils.replaceNSlashWith1Slash(keyBuilder.toString());
                 if (routeMap.containsKey(key))

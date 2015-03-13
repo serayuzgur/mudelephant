@@ -24,11 +24,7 @@ public class ResourcePathHandler implements HttpHandler {
 
 
     public ResourcePathHandler(String path, Map<String, MethodEntry> router) {
-        if (!"*".equals(path))
-            this.path = path;
-        else
-            this.path = "";
-        //TODO: Bind with @ApplicationPath
+        this.path = path;
         this.router = router;
     }
 
@@ -76,6 +72,6 @@ public class ResourcePathHandler implements HttpHandler {
 
 
     private String concatPath(HttpServerExchange exchange) {
-        return StringUtils.replaceNSlashWith1Slash('/' + path + '/' + exchange.getRequestPath() + ':' + exchange.getRequestMethod());
+        return StringUtils.replaceNSlashWith1Slash('/' + exchange.getRequestPath() + '/' + exchange.getRequestMethod());
     }
 }

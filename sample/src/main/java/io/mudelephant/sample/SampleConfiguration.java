@@ -1,12 +1,15 @@
 package io.mudelephant.sample;
 
+import io.mudelephant.athlete.configuration.AthleteConfiguration;
+import io.mudelephant.athlete.configuration.HasAthleteConfiguration;
 import io.mudelephant.undertow.configuration.HasUndertowConfiguration;
 import io.mudelephant.undertow.configuration.UndertowConfiguration;
 
 
-public class SampleConfiguration implements HasUndertowConfiguration {
+public class SampleConfiguration implements HasUndertowConfiguration,HasAthleteConfiguration {
     private String deneme;
     private UndertowConfiguration undertow;
+    private AthleteConfiguration athlete;
 
 
     @Override
@@ -20,5 +23,10 @@ public class SampleConfiguration implements HasUndertowConfiguration {
     @Override
     public UndertowConfiguration getUndertow() {
         return undertow;
+    }
+
+    @Override
+    public AthleteConfiguration getAthlete() {
+        return athlete;
     }
 }
