@@ -1,34 +1,25 @@
 package io.mudelephant.athlete.handler;
 
-import io.mudelephant.common.utils.StringUtils;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
+import com.google.inject.Injector;
+import io.mudelephant.athlete.resource.MethodEntry;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * Handles guice dependency injection operations for handlers.
+ * Handles guice dependency injection operation for resources.
  */
-public class GuicePathHandler implements HttpHandler {
-    private final String path;
-    private final Map<String, Method> router;
+public class GuicePathHandler extends ResourcePathHandler {
 
+    private Injector injector;
 
-    public GuicePathHandler(String path, Map<String, Method> router) {
-        this.path = path;
-        this.router = router;
+    public GuicePathHandler(final String path, final Map<String, MethodEntry> router, final Injector injector) {
+        super(path, router);
+        this.injector = injector;
     }
 
-    @Override
-    public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
-        String path = StringUtils.replaceNSlashWith1Slash(httpServerExchange.getRequestPath() + '/' + httpServerExchange.getRequestMethod());
-
-        Method method = router.get(path);
-        String result = (String) method.invoke(method.getDeclaringClass().newInstance(), path);
-
-        httpServerExchange.getResponseSender().send(result);
-
-        System.out.println(path);
+    protected Object createInstance(Method method) throws IllegalAccessException, InstantiationException {
+        return injector.getInstance(method.getDeclaringClass());
     }
+
 }

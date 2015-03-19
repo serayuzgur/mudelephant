@@ -28,7 +28,6 @@ public class ResourcePathHandler implements HttpHandler {
         this.router = router;
     }
 
-    @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         if (exchange.isInIoThread()) {
             exchange.dispatch(this);
@@ -60,10 +59,14 @@ public class ResourcePathHandler implements HttpHandler {
             objects[j] = o;
         }
         //TODO: find a way to handle streams
-        String result = ObjectMapper.getInstance().toJson(method.invoke(method.getDeclaringClass().newInstance(), objects));
+        String result = ObjectMapper.getInstance().toJson(method.invoke(createInstance(method), objects));
         //TODO: find a way to write as byte[]
         exchange.getResponseSender().send(result);
 
+    }
+
+    protected Object createInstance(Method method) throws IllegalAccessException, InstantiationException {
+        return method.getDeclaringClass().newInstance();
     }
 
     private MethodEntry getResourceMethodBy(String path) {

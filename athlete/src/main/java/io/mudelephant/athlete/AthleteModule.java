@@ -1,6 +1,8 @@
 package io.mudelephant.athlete;
 
+import com.google.inject.Injector;
 import io.mudelephant.athlete.configuration.HasAthleteConfiguration;
+import io.mudelephant.athlete.handler.GuicePathHandler;
 import io.mudelephant.athlete.handler.ResourcePathHandler;
 import io.mudelephant.athlete.resource.ResourceMapper;
 import io.mudelephant.core.Bootstrap;
@@ -16,11 +18,18 @@ public class AthleteModule<T extends HasAthleteConfiguration> extends Module<T> 
     private final UndertowModule undertow;
     private final Set<Object> singletons;
     private final Set<Class<?>> classes;
+    private Injector injector;
 
-    public AthleteModule(UndertowModule undertow, Set<Object> singletons, Set<Class<?>> classes) {
+    public AthleteModule(final UndertowModule undertow, final Set<Object> singletons, final Set<Class<?>> classes) {
         this.undertow = undertow;
         this.singletons = singletons;
         this.classes = classes;
+    }
+
+    public AthleteModule(final UndertowModule undertow, final Set<Object> singletons, final Set<Class<?>> classes, final Injector injector) {
+        this(undertow, singletons, classes);
+        this.injector = injector;
+
     }
 
     @Override
@@ -30,7 +39,10 @@ public class AthleteModule<T extends HasAthleteConfiguration> extends Module<T> 
             context = "/";
         }
         ResourceMapper mapper = new ResourceMapper(context, classes);
-        undertow.registerHandler(context, new ResourcePathHandler(context, mapper.getRouteMap()));
+        if (injector != null)
+            undertow.registerHandler(context, new GuicePathHandler(context, mapper.getRouteMap(), injector));
+        else
+            undertow.registerHandler(context, new ResourcePathHandler(context, mapper.getRouteMap()));
 
     }
 
