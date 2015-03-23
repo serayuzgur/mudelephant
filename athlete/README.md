@@ -31,7 +31,6 @@ Implementing the most used features.
 	 * String
 * Waiting
 	* @OPTIONS
-	* @ApplicationPath
 	* @Produces
 	* @Consumes
 	* @Encoded
@@ -42,6 +41,7 @@ Implementing the most used features.
 	* @HEAD
 	* @PathParam
 	* @MatrixParam
+	* @ApplicationPath
 	* etc. (the ones needed least)
 
 

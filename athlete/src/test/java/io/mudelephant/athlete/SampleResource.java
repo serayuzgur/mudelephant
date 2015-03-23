@@ -1,14 +1,12 @@
 package io.mudelephant.athlete;
 
-import io.mudelephant.athlete.resource.Resource;
-
 import javax.ws.rs.*;
 
 /**
  * Created by serayuzgur on 27/01/15.
  */
 @Path("deneme/1/2")
-public class SampleResource implements Resource {
+public class SampleResource {
 
 
     @GET

@@ -1,12 +1,11 @@
 package io.mudelephant.sample;
 
 import com.google.inject.Inject;
-import io.mudelephant.athlete.resource.Resource;
 
 import javax.ws.rs.*;
 
 @Path("test/1/2")
-public class SampleResource implements Resource {
+public class SampleResource {
 
     @Inject
     SamplePojo samplePojo;

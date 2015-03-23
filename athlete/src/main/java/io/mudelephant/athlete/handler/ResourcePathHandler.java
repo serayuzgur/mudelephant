@@ -35,12 +35,12 @@ public class ResourcePathHandler implements HttpHandler {
         }
         String path = concatPath(exchange);
 
-        LOGGER.info("Request: " + path);
+        LOGGER.info("Request: {}", path);
 
         MethodEntry pair = getResourceMethodBy(path);
 
         if (pair == null) {
-            LOGGER.warn("Path Not Found: " + path);
+            LOGGER.warn("Path Not Found: {}", path);
             exchange.setResponseCode(404);
             return;
         }

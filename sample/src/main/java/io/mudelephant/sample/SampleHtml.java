@@ -1,7 +1,5 @@
 package io.mudelephant.sample;
 
-import io.mudelephant.athlete.resource.Resource;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -9,7 +7,7 @@ import javax.ws.rs.Path;
 
 
 @Path("form")
-public class SampleHtml implements Resource {
+public class SampleHtml {
 
 
     @GET

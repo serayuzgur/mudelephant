@@ -3,6 +3,8 @@ package io.mudelephant.athlete.resource;
 
 import io.mudelephant.athlete.param.setter.*;
 import io.mudelephant.common.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;
@@ -15,19 +17,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ResourceMapper {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(ResourceMapper.class);
     private final ConcurrentHashMap<String, MethodEntry> routeMap = new ConcurrentHashMap<String, MethodEntry>();
 
     private final String context;
 
     /**
-     * PathMapper takes a set of {@link Resource} classes and creates a method level mapping for them
+     * PathMapper takes a set of classes and creates a method level mapping for them
      * It provides a fast access mechanism for routing request.
      *
      * @param classes
      */
     public ResourceMapper(String context, Set<Class<?>> classes) {
-        this.context = (context == null) ? "" : context;
+        this.context = context;
         for (Class<?> clazz : classes) {
+            LOGGER.info("Loading Class: {}", clazz.getName());
             collectPaths(clazz);
         }
     }
@@ -54,9 +58,10 @@ public class ResourceMapper {
                         .append('/')
                         .append(httpMethod);
                 String key = StringUtils.replaceNSlashWith1Slash(keyBuilder.toString());
-                if (routeMap.containsKey(key))
-                    throw new RuntimeException("Path conflict : " + key);
-                //TODO: find a nice way to log paths registered.
+                LOGGER.info("Class: {} Resource: {}:\tDONE", clazz.getName(), key);
+                if (routeMap.containsKey(key)) {
+                    throw new RuntimeException("Path conflict Class: " + clazz.getName() + " Path : " + key);
+                }
 
                 routeMap.put(key, new MethodEntry(method, decideParameterSetters(method, httpMethod)));
             }
