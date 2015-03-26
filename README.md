@@ -13,6 +13,10 @@ It is
 * client-server separated
 * RESTful service and static asset server with extra spices.
 
+##TODO
+*Tests
+*JavaDocs
+
 ##What we got
 * [Undertow](https://github.com/undertow-io/undertow) as server
 * [Boon](https://github.com/boonproject/boon) for Json Parsing.
