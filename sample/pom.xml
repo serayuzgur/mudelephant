@@ -28,6 +28,21 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.mudelephant</groupId>
+            <artifactId>batoo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.batoo.jpa</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${jpa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.34</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.5</version>

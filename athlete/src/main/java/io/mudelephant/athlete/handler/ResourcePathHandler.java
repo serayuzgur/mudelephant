@@ -1,5 +1,6 @@
 package io.mudelephant.athlete.handler;
 
+import io.mudelephant.athlete.handler.listener.ExecuteListener;
 import io.mudelephant.athlete.param.ExchangeBag;
 import io.mudelephant.athlete.param.setter.Setter;
 import io.mudelephant.athlete.resource.MethodEntry;
@@ -21,11 +22,13 @@ public class ResourcePathHandler implements HttpHandler {
 
     private final String path;
     private final Map<String, MethodEntry> router;
+    private final ExecuteListener[] listeners;
 
 
-    public ResourcePathHandler(String path, Map<String, MethodEntry> router) {
+    public ResourcePathHandler(final String path, final Map<String, MethodEntry> router, final ExecuteListener[] listeners) {
         this.path = path;
         this.router = router;
+        this.listeners = listeners;
     }
 
     public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -34,23 +37,27 @@ public class ResourcePathHandler implements HttpHandler {
             return;
         }
         String path = concatPath(exchange);
-
         LOGGER.info("Request: {}", path);
-
-        MethodEntry pair = getResourceMethodBy(path);
-
-        if (pair == null) {
+        MethodEntry entry = getResourceMethodBy(path);
+        if (entry == null) {
             LOGGER.warn("Path Not Found: {}", path);
             exchange.setResponseCode(404);
             return;
         }
-
-
-        executeMethod(pair.getKey(), pair.getValue(), exchange);
+        try {
+            callBefores(entry);
+            executeMethod(entry, exchange);
+            callSuccesses(entry);
+        } catch (Exception e) {
+            LOGGER.error("Error at handling Path:" + path, e);
+            callErrors(entry, e);
+        }
 
     }
 
-    private void executeMethod(Method method, Setter[] setters, HttpServerExchange exchange) throws Exception {
+    private void executeMethod(MethodEntry entry, HttpServerExchange exchange) throws Exception {
+        Method method = entry.getKey();
+        Setter[] setters = entry.getValue();
         Object[] objects = new Object[setters.length];
         ExchangeBag bag = new ExchangeBag(exchange);
 
@@ -76,5 +83,21 @@ public class ResourcePathHandler implements HttpHandler {
 
     private String concatPath(HttpServerExchange exchange) {
         return StringUtils.replaceNSlashWith1Slash('/' + exchange.getRequestPath() + '/' + exchange.getRequestMethod());
+    }
+
+
+    private void callBefores(MethodEntry entry) {
+        for (ExecuteListener listener : listeners)
+            listener.before(entry);
+    }
+
+    private void callSuccesses(MethodEntry entry) {
+        for (ExecuteListener listener : listeners)
+            listener.success(entry);
+    }
+
+    private void callErrors(MethodEntry entry, Exception e) {
+        for (ExecuteListener listener : listeners)
+            listener.error(entry, e);
     }
 }

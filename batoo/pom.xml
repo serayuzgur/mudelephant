@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>athlete</artifactId>
-
+    <artifactId>batoo</artifactId>
 
     <dependencies>
         <dependency>
@@ -20,33 +19,28 @@
         </dependency>
 
         <dependency>
-            <groupId>io.mudelephant</groupId>
-            <artifactId>undertow</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.batoo.jpa</groupId>
+            <artifactId>batoo-jpa</artifactId>
+            <version>${batoo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.batoo.jpa</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${jpa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP-java6</artifactId>
+            <version>2.0.1</version>
+            <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.mudelephant</groupId>
-            <artifactId>batoo</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>${jsr311.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${guice.version}</version>
-        </dependency>
 
     </dependencies>
+
 </project>

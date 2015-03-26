@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.mudelephant.athlete.AthleteModule;
+import io.mudelephant.athlete.handler.listener.JPAExecuteListener;
+import io.mudelephant.batoo.BatooModule;
 import io.mudelephant.core.Application;
 import io.mudelephant.core.Bootstrap;
 import io.mudelephant.undertow.UndertowModule;
@@ -26,10 +28,16 @@ public class SampleApplication extends Application<SampleConfiguration> {
         classes.add(SampleHtml.class);
         classes.add(SampleResource.class);
         singletons.add(new SampleResource());
+
         UndertowModule undertow = new UndertowModule();
         Injector injector = Guice.createInjector(new SampleGuiceModule());
-        AthleteModule athlete = new AthleteModule(undertow,singletons,classes,injector);
+
+        AthleteModule athlete = new AthleteModule(undertow, singletons, classes, injector).addExecuteListener(new JPAExecuteListener());
+
+        BatooModule batoo = new BatooModule(new Class[]{User.class});
+
         bootstrap.addModule(undertow);
         bootstrap.addModule(athlete);
+        bootstrap.addModule(batoo);
     }
 }

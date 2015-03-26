@@ -1,6 +1,7 @@
 package io.mudelephant.athlete.handler;
 
 import com.google.inject.Injector;
+import io.mudelephant.athlete.handler.listener.ExecuteListener;
 import io.mudelephant.athlete.resource.MethodEntry;
 
 import java.lang.reflect.Method;
@@ -13,8 +14,8 @@ public class GuicePathHandler extends ResourcePathHandler {
 
     private Injector injector;
 
-    public GuicePathHandler(final String path, final Map<String, MethodEntry> router, final Injector injector) {
-        super(path, router);
+    public GuicePathHandler(final String path, final Map<String, MethodEntry> router, final ExecuteListener[] listeners, final Injector injector) {
+        super(path, router, listeners);
         this.injector = injector;
     }
 

@@ -11,5 +11,12 @@
   },
   "athlete": {
     "context": ""
+  },
+  "batoo": {
+    "driver": "com.mysql.jdbc.Driver",
+    "url": "jdbc:mysql://localhost:3306/mud",
+    "user": "root",
+    "password": "",
+    "ddl": "DROP"
   }
 }
