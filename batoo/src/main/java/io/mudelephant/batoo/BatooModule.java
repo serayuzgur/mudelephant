@@ -31,7 +31,7 @@ public class BatooModule<T extends HasDBConfiguration> extends Module<T> {
         properties.put("javax.persistence.jdbc.url", configuration.getDatabase().getUrl());
         properties.put("javax.persistence.jdbc.user", configuration.getDatabase().getUser());
         properties.put("javax.persistence.jdbc.password", configuration.getDatabase().getPassword());
-        properties.put("org.batoo.jpa.ddl", configuration.getDatabase().getDdl());
+        properties.putAll(configuration.getDatabase().getProperties());
 
         BatooPersistenceProvider provider = new BatooPersistenceProvider();
         EntityManagerFactory factory = provider.createEntityManagerFactory("Batoo", properties, entityNames);

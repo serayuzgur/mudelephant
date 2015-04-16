@@ -15,7 +15,7 @@ public class SampleConfiguration implements
     private String deneme;
     private UndertowConfiguration undertow;
     private AthleteConfiguration athlete;
-    private DBConfiguration batoo;
+    private DBConfiguration database;
 
 
     @Override
@@ -39,6 +39,6 @@ public class SampleConfiguration implements
 
     @Override
     public DBConfiguration getDatabase() {
-        return batoo;
+        return database;
     }
 }
