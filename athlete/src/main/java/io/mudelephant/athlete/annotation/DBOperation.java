@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Retention(RUNTIME)
 @Documented
-public @interface JPAOperation {
+public @interface DBOperation {
 
     /**
      * If {@code true}, a transaction will be automatically started before the resource method is

@@ -1,16 +1,19 @@
 package io.mudelephant.batoo;
 
-import io.mudelephant.batoo.configuration.HasBatooConfiguration;
 import io.mudelephant.core.Bootstrap;
 import io.mudelephant.core.Module;
+import io.mudelephant.db.EntityManagerManager;
+import io.mudelephant.db.configuration.HasDBConfiguration;
+import org.batoo.jpa.core.BatooPersistenceProvider;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Loads entities and initializes Batoo
  */
-public class BatooModule<T extends HasBatooConfiguration> extends Module<T> {
+public class BatooModule<T extends HasDBConfiguration> extends Module<T> {
 
     private final String[] entityNames;
 
@@ -22,13 +25,16 @@ public class BatooModule<T extends HasBatooConfiguration> extends Module<T> {
 
     @Override
     public void run(Bootstrap bootstrap, T configuration) {
-        Map properties = new HashMap();
+        Map properties = new HashMap<String, String>();
 
-        properties.put("javax.persistence.jdbc.driver", configuration.getBatoo().getDriver());
-        properties.put("javax.persistence.jdbc.url", configuration.getBatoo().getUrl());
-        properties.put("javax.persistence.jdbc.user", configuration.getBatoo().getUser());
-        properties.put("javax.persistence.jdbc.password", configuration.getBatoo().getPassword());
-        properties.put("org.batoo.jpa.ddl", configuration.getBatoo().getDdl());
-        EntityManagerManager.createEntityManagerFactory("Batoo",properties,entityNames);
+        properties.put("javax.persistence.jdbc.driver", configuration.getDatabase().getDriver());
+        properties.put("javax.persistence.jdbc.url", configuration.getDatabase().getUrl());
+        properties.put("javax.persistence.jdbc.user", configuration.getDatabase().getUser());
+        properties.put("javax.persistence.jdbc.password", configuration.getDatabase().getPassword());
+        properties.put("org.batoo.jpa.ddl", configuration.getDatabase().getDdl());
+
+        BatooPersistenceProvider provider = new BatooPersistenceProvider();
+        EntityManagerFactory factory = provider.createEntityManagerFactory("Batoo", properties, entityNames);
+        EntityManagerManager.createInstance(factory);
     }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.mudelephant.athlete.AthleteModule;
-import io.mudelephant.athlete.handler.listener.JPAExecuteListener;
+import io.mudelephant.athlete.handler.listener.DBExecuteListener;
 import io.mudelephant.batoo.BatooModule;
 import io.mudelephant.core.Application;
 import io.mudelephant.core.Bootstrap;
@@ -32,7 +32,7 @@ public class SampleApplication extends Application<SampleConfiguration> {
         UndertowModule undertow = new UndertowModule();
         Injector injector = Guice.createInjector(new SampleGuiceModule());
 
-        AthleteModule athlete = new AthleteModule(undertow, singletons, classes, injector).addExecuteListener(new JPAExecuteListener());
+        AthleteModule athlete = new AthleteModule(undertow, singletons, classes, injector).addExecuteListener(new DBExecuteListener());
 
         BatooModule batoo = new BatooModule(new Class[]{User.class});
 

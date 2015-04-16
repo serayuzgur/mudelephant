@@ -2,8 +2,8 @@ package io.mudelephant.sample;
 
 import io.mudelephant.athlete.configuration.AthleteConfiguration;
 import io.mudelephant.athlete.configuration.HasAthleteConfiguration;
-import io.mudelephant.batoo.configuration.BatooConfiguration;
-import io.mudelephant.batoo.configuration.HasBatooConfiguration;
+import io.mudelephant.db.configuration.DBConfiguration;
+import io.mudelephant.db.configuration.HasDBConfiguration;
 import io.mudelephant.undertow.configuration.HasUndertowConfiguration;
 import io.mudelephant.undertow.configuration.UndertowConfiguration;
 
@@ -11,11 +11,11 @@ import io.mudelephant.undertow.configuration.UndertowConfiguration;
 public class SampleConfiguration implements
         HasUndertowConfiguration,
         HasAthleteConfiguration,
-        HasBatooConfiguration {
+        HasDBConfiguration {
     private String deneme;
     private UndertowConfiguration undertow;
     private AthleteConfiguration athlete;
-    private BatooConfiguration batoo;
+    private DBConfiguration batoo;
 
 
     @Override
@@ -36,8 +36,9 @@ public class SampleConfiguration implements
         return athlete;
     }
 
+
     @Override
-    public BatooConfiguration getBatoo() {
+    public DBConfiguration getDatabase() {
         return batoo;
     }
 }

@@ -13,6 +13,7 @@
         <module>sample</module>
         <module>common</module>
         <module>athlete</module>
+        <module>db</module>
         <module>batoo</module>
     </modules>
 

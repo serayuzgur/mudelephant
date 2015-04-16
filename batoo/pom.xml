@@ -19,6 +19,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.mudelephant</groupId>
+            <artifactId>db</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.batoo.jpa</groupId>
             <artifactId>batoo-jpa</artifactId>
             <version>${batoo.version}</version>

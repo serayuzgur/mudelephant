@@ -1,17 +1,17 @@
 package io.mudelephant.athlete.handler.listener;
 
 
-import io.mudelephant.athlete.annotation.JPAOperation;
+import io.mudelephant.athlete.annotation.DBOperation;
 import io.mudelephant.athlete.resource.MethodEntry;
 
-import static io.mudelephant.batoo.EntityManagerManager.closeCurrentEntityManager;
-import static io.mudelephant.batoo.EntityManagerManager.getOrOpenCurrentEntityManager;
+import static io.mudelephant.db.EntityManagerManager.closeCurrentEntityManager;
+import static io.mudelephant.db.EntityManagerManager.getOrOpenCurrentEntityManager;
 
-public class JPAExecuteListener implements ExecuteListener {
+public class DBExecuteListener implements ExecuteListener {
 
     @Override
     public void before(MethodEntry entry) {
-        JPAOperation operation = entry.getKey().getAnnotation(JPAOperation.class);
+        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().begin();
@@ -20,7 +20,7 @@ public class JPAExecuteListener implements ExecuteListener {
 
     @Override
     public void success(MethodEntry entry) {
-        JPAOperation operation = entry.getKey().getAnnotation(JPAOperation.class);
+        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().commit();
@@ -30,7 +30,7 @@ public class JPAExecuteListener implements ExecuteListener {
 
     @Override
     public void error(MethodEntry entry, Exception e) {
-        JPAOperation operation = entry.getKey().getAnnotation(JPAOperation.class);
+        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().rollback();
