@@ -3,7 +3,7 @@
 A performance oriented, shaved, light-weight Java Web framework which is at **alpha** state.
 
 ##Motivation
-* Having a fast and flexible resource server.
+* Having a **fast** and flexible resource server.
 * Using bleeding-edge technologies.
 * Fun.
 
@@ -14,8 +14,8 @@ It is
 * RESTful service and static asset server with extra spices.
 
 ##TODO
-*Tests
-*JavaDocs
+* Tests
+* JavaDocs
 
 ##What we got
 * [Undertow](https://github.com/undertow-io/undertow) as server
@@ -25,4 +25,5 @@ It is
 
 ##What is next
 * Complete Athlete missing features.
+* DAO Structure and utils
 
