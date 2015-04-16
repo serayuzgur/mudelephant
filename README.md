@@ -21,8 +21,8 @@ It is
 * [Undertow](https://github.com/undertow-io/undertow) as server
 * [Boon](https://github.com/boonproject/boon) for Json Parsing.
 * [Athlete](./athlete/README.md) A **JAX-RS** (like) implementation with **lots** of **missing** features. It is working on top of HTTP Handlers-Undertow.
-
-##What is next
 * [Batoo](https://github.com/BatooOrg/BatooJPA) for JPA.
 
+##What is next
+* Complete Athlete missing features.
 
