@@ -66,10 +66,8 @@ public class ResourcePathHandler implements HttpHandler {
             objects[j] = o;
         }
         //TODO: find a way to handle streams
-        String result = ObjectMapper.getInstance().toJson(method.invoke(createInstance(method), objects));
-        //TODO: find a way to write as byte[]
-        exchange.getResponseSender().send(result);
-
+        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),method.invoke(createInstance(method), objects));
+        exchange.getOutputStream().flush();
     }
 
     protected Object createInstance(Method method) throws IllegalAccessException, InstantiationException {
