@@ -16,10 +16,6 @@ public class PathMapperTest {
         ResourceMapper mapper = new ResourceMapper(null, classes);
 
         assert mapper.getRouteMap().size() == SampleResource.class.getDeclaredMethods().length;
-//       for(Map.Entry<String, Method> entries : mapper.getRouteMap().entrySet()){
-//           System.out.println(entries.getKey() + " : " + entries.getValue().getName());
-//       }
-
 
     }
 }

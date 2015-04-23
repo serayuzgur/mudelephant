@@ -2,7 +2,7 @@ package io.mudelephant.athlete.handler.listener;
 
 
 import io.mudelephant.athlete.annotation.DBOperation;
-import io.mudelephant.athlete.resource.MethodEntry;
+import io.mudelephant.athlete.resource.ServiceInfo;
 
 import static io.mudelephant.db.EntityManagerManager.closeCurrentEntityManager;
 import static io.mudelephant.db.EntityManagerManager.getOrOpenCurrentEntityManager;
@@ -10,8 +10,8 @@ import static io.mudelephant.db.EntityManagerManager.getOrOpenCurrentEntityManag
 public class DBExecuteListener implements ExecuteListener {
 
     @Override
-    public void before(MethodEntry entry) {
-        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
+    public void before(ServiceInfo entry) {
+        DBOperation operation = entry.getMethod().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().begin();
@@ -19,8 +19,8 @@ public class DBExecuteListener implements ExecuteListener {
     }
 
     @Override
-    public void success(MethodEntry entry) {
-        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
+    public void success(ServiceInfo entry) {
+        DBOperation operation = entry.getMethod().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().commit();
@@ -29,8 +29,8 @@ public class DBExecuteListener implements ExecuteListener {
     }
 
     @Override
-    public void error(MethodEntry entry, Exception e) {
-        DBOperation operation = entry.getKey().getAnnotation(DBOperation.class);
+    public void error(ServiceInfo entry, Exception e) {
+        DBOperation operation = entry.getMethod().getAnnotation(DBOperation.class);
         if (operation != null) {
             if (operation.transactional())
                 getOrOpenCurrentEntityManager().getTransaction().rollback();

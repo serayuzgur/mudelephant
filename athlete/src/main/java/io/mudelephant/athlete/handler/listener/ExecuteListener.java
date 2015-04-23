@@ -1,16 +1,13 @@
 package io.mudelephant.athlete.handler.listener;
 
-import io.mudelephant.athlete.resource.MethodEntry;
+import io.mudelephant.athlete.resource.ServiceInfo;
 
-/**
- * Created by serayuzgur on 26/03/15.
- */
 public interface ExecuteListener {
 
-    void before(MethodEntry entry);
+    void before(ServiceInfo entry);
 
-    void success(MethodEntry entry);
+    void success(ServiceInfo entry);
 
-    void error(MethodEntry entry, Exception e);
+    void error(ServiceInfo entry, Exception e);
 
 }

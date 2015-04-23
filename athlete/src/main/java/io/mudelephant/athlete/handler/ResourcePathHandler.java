@@ -3,15 +3,16 @@ package io.mudelephant.athlete.handler;
 import io.mudelephant.athlete.handler.listener.ExecuteListener;
 import io.mudelephant.athlete.param.ExchangeBag;
 import io.mudelephant.athlete.param.setter.Setter;
-import io.mudelephant.athlete.resource.MethodEntry;
+import io.mudelephant.athlete.resource.ServiceInfo;
 import io.mudelephant.common.utils.StringUtils;
 import io.mudelephant.core.ObjectMapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import org.abstractmeta.reflectify.MethodInvoker;
+import org.abstractmeta.reflectify.Reflectify;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -21,11 +22,11 @@ public class ResourcePathHandler implements HttpHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourcePathHandler.class);
 
     private final String path;
-    private final Map<String, MethodEntry> router;
+    private final Map<String, ServiceInfo> router;
     private final ExecuteListener[] listeners;
 
 
-    public ResourcePathHandler(final String path, final Map<String, MethodEntry> router, final ExecuteListener[] listeners) {
+    public ResourcePathHandler(final String path, final Map<String, ServiceInfo> router, final ExecuteListener[] listeners) {
         this.path = path;
         this.router = router;
         this.listeners = listeners;
@@ -38,43 +39,42 @@ public class ResourcePathHandler implements HttpHandler {
         }
         String path = concatPath(exchange);
         LOGGER.info("Request: {}", path);
-        MethodEntry entry = getResourceMethodBy(path);
-        if (entry == null) {
+        ServiceInfo serviceInfo = getResourceMethodBy(path);
+        if (serviceInfo == null) {
             LOGGER.warn("Path Not Found: {}", path);
             exchange.setResponseCode(404);
             return;
         }
         try {
-            callBefores(entry);
-            executeMethod(entry, exchange);
-            callSuccesses(entry);
+            callBefores(serviceInfo);
+            executeMethod(serviceInfo, exchange);
+            callSuccesses(serviceInfo);
         } catch (Exception e) {
             LOGGER.error("Error at handling Path:" + path, e);
-            callErrors(entry, e);
+            callErrors(serviceInfo, e);
         }
 
     }
 
-    private void executeMethod(MethodEntry entry, HttpServerExchange exchange) throws Exception {
-        Method method = entry.getKey();
-        Setter[] setters = entry.getValue();
-        Object[] objects = new Object[setters.length];
+    private void executeMethod(ServiceInfo serviceInfo, HttpServerExchange exchange) throws Exception {
+        MethodInvoker invoker = serviceInfo.getInvoker();
+        Setter[] setters = serviceInfo.getSetters();
         ExchangeBag bag = new ExchangeBag(exchange);
 
         for (int j = 0; j < setters.length; j++) {
             Object o = setters[j].get(bag);
-            objects[j] = o;
+            invoker.getParameterSetter(j).set(o);
         }
         //TODO: find a way to handle streams
-        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),method.invoke(createInstance(method), objects));
+        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),invoker.invoke(createInstance(serviceInfo.getProvider())));
         exchange.getOutputStream().flush();
     }
 
-    protected Object createInstance(Method method) throws IllegalAccessException, InstantiationException {
-        return method.getDeclaringClass().newInstance();
+    protected Object createInstance(Reflectify.Provider provider) throws IllegalAccessException, InstantiationException {
+        return provider.get();
     }
 
-    private MethodEntry getResourceMethodBy(String path) {
+    private ServiceInfo getResourceMethodBy(String path) {
         return router.get(path);
     }
 
@@ -84,17 +84,17 @@ public class ResourcePathHandler implements HttpHandler {
     }
 
 
-    private void callBefores(MethodEntry entry) {
+    private void callBefores(ServiceInfo entry) {
         for (ExecuteListener listener : listeners)
             listener.before(entry);
     }
 
-    private void callSuccesses(MethodEntry entry) {
+    private void callSuccesses(ServiceInfo entry) {
         for (ExecuteListener listener : listeners)
             listener.success(entry);
     }
 
-    private void callErrors(MethodEntry entry, Exception e) {
+    private void callErrors(ServiceInfo entry, Exception e) {
         for (ExecuteListener listener : listeners)
             listener.error(entry, e);
     }

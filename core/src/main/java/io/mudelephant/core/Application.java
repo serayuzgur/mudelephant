@@ -43,7 +43,8 @@ public abstract class Application<T extends Configuration> {
             for (Module module : bootstrap.getModules())
                 module.run(bootstrap, configuration);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(1);
         }
 
 

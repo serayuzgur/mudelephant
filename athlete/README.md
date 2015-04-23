@@ -1,6 +1,6 @@
 # Athlete
 
-A **JAX-RS** (like) implementation with **lots** of **missing** features. It is on top of HTTP Handlers,Undertow.
+A **JAX-RS** (like) implementation with **lots** of **missing** features. It is on top of HTTP Handlers,Undertow. Using [Reflectify](https://code.google.com/p/reflectify-protocol/) for all reflection needs.
 
 ##Motivation
 Having a fast and thin layer, without any fat (No Servlet). 
