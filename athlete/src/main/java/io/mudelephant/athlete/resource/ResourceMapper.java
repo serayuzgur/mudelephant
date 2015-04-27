@@ -1,12 +1,10 @@
 package io.mudelephant.athlete.resource;
 
 
+import com.esotericsoftware.reflectasm.ConstructorAccess;
+import com.esotericsoftware.reflectasm.MethodAccess;
 import io.mudelephant.athlete.param.setter.*;
 import io.mudelephant.common.utils.StringUtils;
-import org.abstractmeta.reflectify.MethodInvoker;
-import org.abstractmeta.reflectify.Reflectify;
-import org.abstractmeta.reflectify.ReflectifyRegistry;
-import org.abstractmeta.reflectify.runtime.ReflectifyRuntimeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +24,6 @@ public class ResourceMapper {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ResourceMapper.class);
     private final ConcurrentHashMap<String, ServiceInfo> routeMap = new ConcurrentHashMap<String, ServiceInfo>();
-    private ReflectifyRegistry registry;
 
 
     private final String context;
@@ -39,7 +36,6 @@ public class ResourceMapper {
      */
     public ResourceMapper(String context, Set<Class<?>> classes) {
         this.context = context;
-        registry = new ReflectifyRuntimeRegistry();
         for (Class<?> clazz : classes) {
             LOGGER.info("Loading Class: {}", clazz.getName());
             collectPaths(clazz);
@@ -53,12 +49,11 @@ public class ResourceMapper {
      */
     private void collectPaths(Class<?> clazz) {
         String cPath = getPathFromAnnotation(clazz.getAnnotation(Path.class)).toLowerCase(Locale.ENGLISH);
-        Reflectify reflectify = registry.get(clazz);
-        Reflectify.Provider provider = reflectify.getProvider();
+        MethodAccess methodAccess = MethodAccess.get(clazz);
+        ConstructorAccess constructorAccess = ConstructorAccess.get(clazz);
+
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-
-            MethodInvoker invoker = reflectify.getMethodInvoker(method.getReturnType(), method.getName(), method.getParameterTypes());
 
             for (String httpMethod : getHttpMethodAnnotations(method)) {
                 StringBuilder keyBuilder = new StringBuilder();
@@ -77,7 +72,7 @@ public class ResourceMapper {
                     throw new RuntimeException("Path conflict Class: " + clazz.getName() + " Path : " + key);
                 }
 
-                routeMap.put(key, new ServiceInfo(provider, invoker, method, decideParameterSetters(method, httpMethod)));
+                routeMap.put(key, new ServiceInfo(constructorAccess, methodAccess, method, decideParameterSetters(method, httpMethod)));
             }
 
         }

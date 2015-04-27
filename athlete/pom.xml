@@ -49,15 +49,16 @@
         </dependency>
 
         <dependency>
-            <groupId>org.abstractmeta</groupId>
-            <artifactId>reflectify-protocol-core</artifactId>
-            <version>0.3.0</version>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.0</version>
+            <classifier>shaded</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.abstractmeta</groupId>
-            <artifactId>reflectify-protocol-runtime</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-
     </dependencies>
 </project>

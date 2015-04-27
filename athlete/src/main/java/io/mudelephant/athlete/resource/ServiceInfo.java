@@ -1,8 +1,8 @@
 package io.mudelephant.athlete.resource;
 
+import com.esotericsoftware.reflectasm.ConstructorAccess;
+import com.esotericsoftware.reflectasm.MethodAccess;
 import io.mudelephant.athlete.param.setter.Setter;
-import org.abstractmeta.reflectify.MethodInvoker;
-import org.abstractmeta.reflectify.Reflectify;
 
 import java.lang.reflect.Method;
 
@@ -12,28 +12,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Holds class and its related provider, invoker, method  and parameter setters for pairing with route.
  */
 public class ServiceInfo {
-    Reflectify.Provider provider;
-    MethodInvoker invoker;
+    ConstructorAccess constructorAccess;
+    MethodAccess methodAccess;
     Method method;
     Setter[] setters;
 
-    public ServiceInfo(Reflectify.Provider provider, MethodInvoker invoker,Method method, Setter[] setters) {
-        checkNotNull(provider,"Null provider is not allowed.");
-        this.provider = provider;
-        checkNotNull(invoker,"Null invoker is not allowed.");
-        this.invoker = invoker;
+    public ServiceInfo(ConstructorAccess constructorAccess, MethodAccess methodAccess,Method method, Setter[] setters) {
+        checkNotNull(constructorAccess,"Null constructorAccess is not allowed.");
+        this.constructorAccess = constructorAccess;
+        checkNotNull(methodAccess,"Null methodAccess is not allowed.");
+        this.methodAccess = methodAccess;
         checkNotNull(method,"Null method is not allowed.");
         this.method = method;
         checkNotNull(setters,"Null setters is not allowed.");
         this.setters = setters;
     }
 
-    public Reflectify.Provider getProvider() {
-        return provider;
+    public ConstructorAccess getConstructorAccess() {
+        return constructorAccess;
     }
 
-    public MethodInvoker getInvoker() {
-        return invoker;
+    public MethodAccess getMethodAccess() {
+        return methodAccess;
     }
 
     public Method getMethod() {

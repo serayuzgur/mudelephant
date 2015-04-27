@@ -11,7 +11,7 @@ public class SampleHtml {
 
 
     @GET
-    public String get(String test) {
+    public String get() {
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<body>\n" +

@@ -1,5 +1,7 @@
 package io.mudelephant.athlete.handler;
 
+import com.esotericsoftware.reflectasm.ConstructorAccess;
+import com.esotericsoftware.reflectasm.MethodAccess;
 import io.mudelephant.athlete.handler.listener.ExecuteListener;
 import io.mudelephant.athlete.param.ExchangeBag;
 import io.mudelephant.athlete.param.setter.Setter;
@@ -8,8 +10,7 @@ import io.mudelephant.common.utils.StringUtils;
 import io.mudelephant.core.ObjectMapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-import org.abstractmeta.reflectify.MethodInvoker;
-import org.abstractmeta.reflectify.Reflectify;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,21 +58,27 @@ public class ResourcePathHandler implements HttpHandler {
     }
 
     private void executeMethod(ServiceInfo serviceInfo, HttpServerExchange exchange) throws Exception {
-        MethodInvoker invoker = serviceInfo.getInvoker();
+        MethodAccess methodAccess = serviceInfo.getMethodAccess();
         Setter[] setters = serviceInfo.getSetters();
         ExchangeBag bag = new ExchangeBag(exchange);
 
+        Object[] parameters = new Object[setters.length];
+
         for (int j = 0; j < setters.length; j++) {
             Object o = setters[j].get(bag);
-            invoker.getParameterSetter(j).set(o);
+            parameters[j] = o;
         }
         //TODO: find a way to handle streams
-        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),invoker.invoke(createInstance(serviceInfo.getProvider())));
+        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),methodAccess.invoke(
+                createInstance(serviceInfo.getConstructorAccess()),
+                serviceInfo.getMethod().getName(),
+                parameters
+        ));
         exchange.getOutputStream().flush();
     }
 
-    protected Object createInstance(Reflectify.Provider provider) throws IllegalAccessException, InstantiationException {
-        return provider.get();
+    private Object createInstance(ConstructorAccess provider) throws IllegalAccessException, InstantiationException {
+        return provider.newInstance();
     }
 
     private ServiceInfo getResourceMethodBy(String path) {
