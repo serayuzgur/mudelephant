@@ -10,7 +10,6 @@ import io.mudelephant.common.utils.StringUtils;
 import io.mudelephant.core.ObjectMapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,10 +38,14 @@ public class ResourcePathHandler implements HttpHandler {
             return;
         }
         String path = concatPath(exchange);
-        LOGGER.info("Request: {}", path);
+        if (LOGGER.isDebugEnabled())
+            LOGGER.debug("Request {} {}", exchange.toString(), exchange.getRequestHeaders().toString());
+        else
+            LOGGER.info("Request: {} {}", path);
+
         ServiceInfo serviceInfo = getResourceMethodBy(path);
         if (serviceInfo == null) {
-            LOGGER.warn("Path Not Found: {}", path);
+            LOGGER.warn("Path Not Found: {}", path,exchange.getRequestHeaders().toString());
             exchange.setResponseCode(404);
             return;
         }
@@ -69,7 +72,7 @@ public class ResourcePathHandler implements HttpHandler {
             parameters[j] = o;
         }
         //TODO: find a way to handle streams
-        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(),methodAccess.invoke(
+        ObjectMapper.getInstance().writeValue(exchange.getOutputStream(), methodAccess.invoke(
                 createInstance(serviceInfo.getConstructorAccess()),
                 serviceInfo.getMethod().getName(),
                 parameters

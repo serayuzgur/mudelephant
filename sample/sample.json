@@ -18,7 +18,9 @@
     "user": "root",
     "password": "",
     "properties":{
-      "org.batoo.jpa.ddl" :"DROP"
+      "org.batoo.jpa.ddl" :"DROP",
+      "hibernate.dialect" :"org.hibernate.dialect.MySQL5InnoDBDialect",
+      "hibernate.hbm2ddl.auto": "update"
     }
   }
 }

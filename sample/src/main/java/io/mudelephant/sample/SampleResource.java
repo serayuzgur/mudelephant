@@ -74,7 +74,7 @@ public class SampleResource {
                            @DefaultValue("c") @QueryParam("querykey2") Character query2,
                            @DefaultValue("3") @QueryParam("querykey3") Integer query3) {
         EntityManager entityManager = EntityManagerManager.getOrOpenCurrentEntityManager();
-        List<User> users = entityManager.createQuery("select u from User u ").getResultList();
+        List<User> users = (List<User>) entityManager.createQuery("select u from User u ").getResultList();
         return users;
     }
 

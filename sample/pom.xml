@@ -27,16 +27,21 @@
             <artifactId>athlete</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.mudelephant</groupId>-->
+            <!--<artifactId>batoo</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.mudelephant</groupId>
-            <artifactId>batoo</artifactId>
+            <artifactId>hibernate</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.batoo.jpa</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${jpa.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.batoo.jpa</groupId>-->
+            <!--<artifactId>persistence-api</artifactId>-->
+            <!--<version>${jpa.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

@@ -5,9 +5,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.mudelephant.athlete.AthleteModule;
 import io.mudelephant.athlete.handler.listener.DBExecuteListener;
-import io.mudelephant.batoo.BatooModule;
 import io.mudelephant.core.Application;
 import io.mudelephant.core.Bootstrap;
+import io.mudelephant.hibernate.HibernateModule;
 import io.mudelephant.undertow.UndertowModule;
 
 import java.util.Set;
@@ -34,10 +34,11 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
         AthleteModule athlete = new AthleteModule(undertow, singletons, classes, injector).addExecuteListener(new DBExecuteListener());
 
-        BatooModule batoo = new BatooModule(new Class[]{User.class});
+//        BatooModule batoo = new BatooModule(new Class[]{User.class});
 
+        HibernateModule hibernate = new HibernateModule(new Class[]{User.class});
         bootstrap.addModule(undertow);
         bootstrap.addModule(athlete);
-        bootstrap.addModule(batoo);
+        bootstrap.addModule(hibernate);
     }
 }

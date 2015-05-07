@@ -15,6 +15,7 @@
         <module>athlete</module>
         <module>db</module>
         <module>batoo</module>
+        <module>hibernate</module>
     </modules>
 
 
@@ -31,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <undertow.version>1.2.0.Beta7</undertow.version>
+        <undertow.version>1.2.1.Final</undertow.version>
         <boon.version>0.30</boon.version>
         <logback.version>1.1.2</logback.version>
         <slf4j.version>1.7.10</slf4j.version>
