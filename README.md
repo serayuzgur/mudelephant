@@ -22,7 +22,9 @@ It is
 * [Boon](https://github.com/boonproject/boon) for Json Parsing.
 * [Athlete](./athlete/README.md) A **JAX-RS** (like) implementation with **lots** of **missing** features. It is working on top of HTTP Handlers-Undertow.
  * [Reflectasm](https://github.com/EsotericSoftware/reflectasm) for higher speed at reflection.
-* [Batoo](https://github.com/BatooOrg/BatooJPA) for JPA.
+* [DB](.db/README.md) for JPA.
+ * [Batoo](https://github.com/BatooOrg/BatooJPA) for JPA impl.
+ * [Hibernate](https://github.com/hibernate) for JPA impl (Default).
 
 ##What is next
 * Complete Athlete missing features.
