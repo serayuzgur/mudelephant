@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public abstract class Application<T extends Configuration> {
 
-    private String usage = "Usage : app command configuration";
+    private String usage = "Usage : app configurationFilePath command(optional)";
 
     /**
      * Starter method of application.
@@ -26,14 +26,12 @@ public abstract class Application<T extends Configuration> {
      */
     public final void run(final String[] args, Class<T> configClass) {
         Objects.requireNonNull(args, usage);
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.err.println(usage);
             System.exit(1);
         }
-        String command = Objects.requireNonNull(args[0], usage);
-        String configPath = Objects.requireNonNull(args[1], usage);
+        String configPath = Objects.requireNonNull(args[0], usage);
 
-        //TODO: Create md conf and get special parameters from there.
         T configuration = readConfiguration(configPath, configClass);
 
         Bootstrap<T> bootstrap = createBootstrap(args, configuration);
@@ -50,8 +48,13 @@ public abstract class Application<T extends Configuration> {
 
     }
 
+    /**
+     * Creates the bootstrap instance.
+     * @param args
+     * @param configuration
+     * @return
+     */
     private Bootstrap<T> createBootstrap(String[] args, T configuration) {
-        //TODO: take in and out from conf
         return new Bootstrap<T>(args, this, System.in, System.out, configuration);
     }
 
@@ -76,6 +79,13 @@ public abstract class Application<T extends Configuration> {
         }
     }
 
+    /**
+     * An Abstract method for applications. All necessary operations must be done here. It will be called before module run methods.
+     *
+     * @param bootstrap
+     * @param configuration
+     * @throws Exception
+     */
     public abstract void run(Bootstrap bootstrap, T configuration) throws Exception;
 
 }

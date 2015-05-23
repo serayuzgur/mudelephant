@@ -3,7 +3,7 @@ package io.mudelephant.core;
 import org.boon.json.JsonFactory;
 
 /**
- * A singleton wrappper for the Boon Object Mapper.
+ * A singleton wrapper for the Boon Object Mapper.
  */
 public class ObjectMapper {
 
