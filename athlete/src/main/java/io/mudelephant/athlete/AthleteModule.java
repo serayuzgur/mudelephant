@@ -16,7 +16,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Initialize Athlete module, creates a {@link ResourcePathHandler} and registers it to {@link UndertowModule}
+ * Athlete module, creates a {@link ResourcePathHandler} and registers it to {@link UndertowModule}
+ * It works with Undertow only
  */
 public class AthleteModule<T extends HasAthleteConfiguration> extends Module<T> {
 
@@ -28,18 +29,38 @@ public class AthleteModule<T extends HasAthleteConfiguration> extends Module<T> 
     private Set<ExecuteListener> executeListeners = new HashSet<>();
 
 
+    /**
+     * Creates instance without dependency injection support.
+     * @param undertow
+     * @param singletons
+     * @param classes
+     */
     public AthleteModule(final UndertowModule undertow, final Set<Object> singletons, final Set<Class<?>> classes) {
         this.undertow = undertow;
         this.singletons = singletons;
         this.classes = classes;
     }
 
+    /**
+     *      * Creates instance with dependency injection support.
+     * @param undertow
+     * @param singletons
+     * @param classes
+     * @param injector
+     */
     public AthleteModule(final UndertowModule undertow, final Set<Object> singletons, final Set<Class<?>> classes, final Injector injector) {
         this(undertow, singletons, classes);
         this.injector = injector;
 
     }
 
+    /**
+     * Add execute listeners for the {@link ResourceMapper}
+     * All listerners will be informed for before , success and error events.
+     * You can chain this method.
+     * @param listener
+     * @return
+     */
     public AthleteModule addExecuteListener(ExecuteListener listener) {
         executeListeners.add(listener);
         return this;

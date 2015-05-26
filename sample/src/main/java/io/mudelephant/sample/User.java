@@ -30,8 +30,8 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    public User() {
-    }
+//    public User() {
+//    }
 
     public User(String email, String name, String surname, String password, boolean active, String role) {
         this.oid = (int) (Math.random() * 1000);
