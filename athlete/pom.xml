@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>io.mudelephant</groupId>
-            <artifactId>batoo</artifactId>
+            <artifactId>db</artifactId>
             <version>${project.version}</version>
         </dependency>
 

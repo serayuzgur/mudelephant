@@ -34,7 +34,6 @@ public class SampleApplication extends Application<SampleConfiguration> {
 
         AthleteModule athlete = new AthleteModule(undertow, singletons, classes, injector).addExecuteListener(new DBExecuteListener());
 
-//        BatooModule batoo = new BatooModule(new Class[]{User.class});
 
         HibernateModule hibernate = new HibernateModule(new Class[]{User.class});
         bootstrap.addModule(undertow);

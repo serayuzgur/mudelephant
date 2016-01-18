@@ -6,13 +6,17 @@ import java.util.HashMap;
 
 /**
  * ParserDecider is a Parser selector according to class.
- * It is not thread safe and it does not need to.
+ * It is not thread safe and it does not need to be.
+ * Single thread will use it at the start of server.
+ * Initializes base parsers stores and returns single instance for each.
+ *
  */
 public class Parsers {
     private static HashMap<String, Parser> map = new HashMap<String, Parser>();
     private static Parser defaultParser = new JsonParser();
 
     static {
+        // Initialize singleton parsers.
         map.put("BigInteger", new BigIntegerParser());
 
         map.put("Boolean", new BooleanParser());

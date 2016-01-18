@@ -4,10 +4,10 @@ import io.mudelephant.core.Bootstrap;
 import io.mudelephant.core.Module;
 import io.mudelephant.db.EntityManagerManager;
 import io.mudelephant.db.configuration.HasDBConfiguration;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.cfg.Configuration;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
 public class HibernateModule<T extends HasDBConfiguration> extends Module<T> {
@@ -25,17 +25,18 @@ public class HibernateModule<T extends HasDBConfiguration> extends Module<T> {
     public void run(Bootstrap bootstrap, T configuration) throws ClassNotFoundException {
         Properties properties = new Properties();
 
-        properties.put("hibernate.connection.driver_class", configuration.getDatabase().getDriver());
-        properties.put("hibernate.connection.url", configuration.getDatabase().getUrl());
-        properties.put("hibernate.connection.username", configuration.getDatabase().getUser());
-        properties.put("hibernate.connection.password", configuration.getDatabase().getPassword());
+        properties.put(AvailableSettings.DRIVER, configuration.getDatabase().getDriver());
+        properties.put(AvailableSettings.URL, configuration.getDatabase().getUrl());
+        properties.put(AvailableSettings.USER, configuration.getDatabase().getUser());
+        properties.put(AvailableSettings.PASS, configuration.getDatabase().getPassword());
         properties.putAll(configuration.getDatabase().getProperties());
 
-        Ejb3Configuration hConfig = new Ejb3Configuration();
+
+        Configuration hConfig = new Configuration();
         for (String entity : entityNames) {
             hConfig.addAnnotatedClass(Class.forName(entity));
         }
-        hConfig.configure(properties);
+        hConfig.addProperties(properties);
         hConfig.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "managed");
         hConfig.setProperty(AvailableSettings.USE_SQL_COMMENTS, "false");
         hConfig.setProperty(AvailableSettings.USE_GET_GENERATED_KEYS, "true");
@@ -44,9 +45,10 @@ public class HibernateModule<T extends HasDBConfiguration> extends Module<T> {
         hConfig.setProperty(AvailableSettings.ORDER_UPDATES, "true");
         hConfig.setProperty(AvailableSettings.ORDER_INSERTS, "true");
         hConfig.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, "true");
-        hConfig.setProperty("jadira.usertype.autoRegisterUserTypes", "true");
-        EntityManagerFactory factory = hConfig.buildEntityManagerFactory();
-        EntityManagerManager.createInstance(factory);
+        SessionFactory factory = hConfig.buildSessionFactory();
+
+
+        EntityManagerManager.createInstance(new MudEntityManagerFactory(factory));
     }
 }
 

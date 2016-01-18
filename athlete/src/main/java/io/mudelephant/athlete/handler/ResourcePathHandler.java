@@ -45,7 +45,7 @@ public class ResourcePathHandler implements HttpHandler {
 
         ServiceInfo serviceInfo = getResourceMethodBy(path);
         if (serviceInfo == null) {
-            LOGGER.warn("Path Not Found: {}", path,exchange.getRequestHeaders().toString());
+            LOGGER.warn("Path Not Found: {}", path, exchange.getRequestHeaders().toString());
             exchange.setResponseCode(404);
             return;
         }
@@ -71,6 +71,7 @@ public class ResourcePathHandler implements HttpHandler {
             Object o = setters[j].get(bag);
             parameters[j] = o;
         }
+
         //TODO: find a way to handle streams
         ObjectMapper.getInstance().writeValue(exchange.getOutputStream(), methodAccess.invoke(
                 createInstance(serviceInfo.getConstructorAccess()),
